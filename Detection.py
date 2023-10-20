@@ -6,7 +6,6 @@ import numpy as np
 import streamlit as st
 import tensorflow as tf
 from streamlit_extras.add_vertical_space import add_vertical_space
-from streamlit_extras.stateful_button import button
 from ultralytics import YOLO
 
 # Configure Streamlit page layout

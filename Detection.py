@@ -67,8 +67,8 @@ with tab1:
     # Define a function to load the pre-trained model
     @st.cache_resource
     def load_models():
-        keras_model = tf.keras.models.load_model("Models\saved_model")
-        yolo_model = YOLO("Models\\best.pt")
+        keras_model = tf.keras.models.load_model("Models/saved_model")
+        yolo_model = YOLO("Models/best.pt")
         return keras_model, yolo_model
 
     keras_model, yolo_model = load_models()  # load model

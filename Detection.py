@@ -165,7 +165,7 @@ with tab2:
     if start_btn:
         st.session_state.streaming = True
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     while st.session_state.streaming:
         ret, frame = cap.read()
 

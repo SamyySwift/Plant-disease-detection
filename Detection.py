@@ -16,6 +16,10 @@ with st.sidebar:
     st.header("⚙️**Setup**")
     # Set the number of columns for image display
     n_cols = st.slider("Set number of grid columns", 2, 5)
+    model_thresh = st.number_input(
+        "Adjust model confidence threshold value", 0.3, 1.0, 0.5
+    )
+    camera_index = st.number_input("Set camera index for OpenCv", 0, 3, 0)
 
 
 # Define class names for plant diseases
@@ -80,6 +84,7 @@ with tab1:
         batched_img = tf.expand_dims(img_array, 0)
         predictions = keras_model.predict(batched_img)
         score = tf.nn.softmax(predictions[0])
+
         return img_array, score
 
     # Display a subheading for camera inference
@@ -98,8 +103,8 @@ with tab1:
         predictions = keras_model.predict(batched_img)
         score = tf.nn.softmax(predictions[0])
 
-        if np.max(score) < 0.5:
-            st.write("I'm not very certain about what plant disease is this")
+        if np.max(score) < model_thresh:
+            st.warning("I'm not very certain about what plant disease it is")
         else:
             # Display the prediction result
             st.write(
@@ -121,24 +126,26 @@ with tab1:
 
     if pred_btn:
         if uploaded_img:
-            crop_image, pred_label, actual_label, confidence = [], [], [], []
+            crop_image, pred_label, confidence = [], [], []
             for file in uploaded_img:
                 img, score = preprocess_img(file)
                 crop_image.append(img.astype("uint8"))
-                pred_label.append(class_names[np.argmax(score)])
-                actual_label.append(f"{os.path.basename(file.name).split('.')[0]}")
-                confidence.append(f"{100 * np.max(score) :.2f}%")
+                if np.max(score) < model_thresh:
+                    pred_label.append("Not very certain")
+                    confidence.append(f"{100 * np.max(score) :.2f}%")
+                else:
+                    pred_label.append(class_names[np.argmax(score)])
+                    confidence.append(f"{100 * np.max(score) :.2f}%")
 
             n_rows = int(1 + len(crop_image) // n_cols)
             rows = [st.columns(n_cols) for _ in range(n_cols)]
             cols = [column for row in rows for column in row]
 
             # Display predictions for uploaded images
-            for col, poster, p_label, act_label, conf in zip(
-                cols, crop_image, pred_label, actual_label, confidence
+            for col, poster, p_label, conf in zip(
+                cols, crop_image, pred_label, confidence
             ):
                 col.markdown(f"###### :orange[Predicted_Disease]: :green[{p_label}]")
-                # col.markdown(f"###### :orange[Actual_Label]: :green[{act_label}]")
                 col.markdown(f"###### :orange[Confidence]: :green[{conf}]")
                 col.image(poster)
         else:
@@ -165,12 +172,13 @@ with tab2:
     if start_btn:
         st.session_state.streaming = True
 
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(camera_index)
+
     while st.session_state.streaming:
         ret, frame = cap.read()
 
         if not ret:
-            st.write("The video has ended")
+            st.warning("⚠️Could not connect to camera")
             break
 
         results = yolo_model(frame)  # get results
@@ -184,4 +192,4 @@ with tab2:
             frame_placeholder = st.empty()
             break
 
-    cap.release()
+        cap.release()

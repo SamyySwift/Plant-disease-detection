@@ -98,12 +98,12 @@ with tab1:
         predictions = keras_model.predict(batched_img)
         score = tf.nn.softmax(predictions[0])
 
-        if score < 0.5:
+        if np.max(score) < 0.5:
             st.write("I'm not very certain about what plant disease is this")
         else:
             # Display the prediction result
             st.write(
-                f"Predicted Label: {class_names[np.argmax(score)]}, Conf: {100 * np.max(score) :.2f}%"
+                f":orange[Predicted Label]: {class_names[np.argmax(score)]} with {100 * np.max(score) :.2f}% confidence"
             )
 
     st.markdown("#")

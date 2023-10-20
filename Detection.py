@@ -13,6 +13,7 @@ st.set_page_config(layout="centered")
 st.title("🪴Plant Disease Detector🪴")
 
 with st.sidebar:
+    st.header("⚙️**Setup**")
     # Set the number of columns for image display
     n_cols = st.slider("Set number of grid columns", 2, 5)
 
@@ -137,7 +138,7 @@ with tab1:
                 cols, crop_image, pred_label, actual_label, confidence
             ):
                 col.markdown(f"###### :orange[Predicted_Disease]: :green[{p_label}]")
-                col.markdown(f"###### :orange[Actual_Label]: :green[{act_label}]")
+                # col.markdown(f"###### :orange[Actual_Label]: :green[{act_label}]")
                 col.markdown(f"###### :orange[Confidence]: :green[{conf}]")
                 col.image(poster)
         else:

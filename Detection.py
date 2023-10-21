@@ -21,9 +21,10 @@ with st.sidebar:
     # Set the number of columns for image display
     n_cols = st.slider("Set number of grid columns", 2, 5)
     model_thresh = st.number_input(
-        "Adjust model confidence threshold value", 0.3, 1.0, 0.5
+        "Adjust classification model confidence threshold", 0.3, 1.0, 0.5
     )
-    camera_index = st.number_input("Set camera index for OpenCv", 0, 3, 0)
+
+    object_detection_thresh = st.number_input("Adjust segmentation model confidence threshold", 0.2, 1.0, 0.5)
 
 
 # Define class names for plant diseases
@@ -165,7 +166,7 @@ with tab2:
     class VideoProcessor:
         def recv(self, frame):
             frame = frame.to_ndarray(format="bgr24")
-            results = yolo_model(frame)  # get results
+            results = yolo_model(frame, conf=object_detection_thresh)  # get results
             frame = results[0].plot()
 
             return av.VideoFrame.from_ndarray(frame, format="bgr24")

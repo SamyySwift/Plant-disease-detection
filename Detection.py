@@ -7,10 +7,14 @@ import streamlit as st
 import tensorflow as tf
 from streamlit_extras.add_vertical_space import add_vertical_space
 from ultralytics import YOLO
+from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+import av
+
 
 # Configure Streamlit page layout
 st.set_page_config(layout="centered")
-st.title("🪴Plant Disease Detector🪴")
+st.title(":blue[Plant Disease] :red[Detector]")
+# st.markdown("#### Empowering farmers with a timely and accurate tool for identifying plant diseases in their crops using Artificial Intelliegence")
 
 with st.sidebar:
     st.header("⚙️**Setup**")
@@ -64,7 +68,7 @@ class_names = [
     "Tomato_healthy",
 ]
 
-
+add_vertical_space(3)
 tab1, tab2 = st.tabs(["Plant Disaese Classification", "Plant Disease Segmentation"])
 
 with tab1:
@@ -111,7 +115,7 @@ with tab1:
                 f":orange[Predicted Label]: {class_names[np.argmax(score)]} with {100 * np.max(score) :.2f}% confidence"
             )
 
-    st.markdown("#")
+    add_vertical_space(3)
     # Display a subheading for batch prediction
     st.subheader(":blue[🗃️Upload Plant Images]")
 
@@ -154,42 +158,20 @@ with tab1:
 
 # Instance segmentation
 with tab2:
+    add_vertical_space(2)
     st.title("Instance Segmentation")
-    st.markdown("#")
+    add_vertical_space(2)
 
-    frame_placeholder = st.empty()
+    class VideoProcessor:
+        def recv(self, frame):
+            frame = frame.to_ndarray(format="bgr24")
+            results = yolo_model(frame)  # get results
+            frame = results[0].plot()
 
-    col3, col4 = st.columns([2, 7])
-    with col3:
-        start_btn = st.button("Start Stream", key="btn1")
+            return av.VideoFrame.from_ndarray(frame, format="bgr24")
 
-    with col4:
-        stop_btn = st.button("Stop Stream")
-
-    if "streaming" not in st.session_state:
-        st.session_state.streaming = False
-
-    if start_btn:
-        st.session_state.streaming = True
-
-    cap = cv2.VideoCapture(camera_index)
-
-    while st.session_state.streaming:
-        ret, frame = cap.read()
-
-        if not ret:
-            st.warning("⚠️Could not connect to camera")
-            break
-
-        results = yolo_model(frame)  # get results
-        frame = results[0].plot()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        frame_placeholder.image(frame, channels="RGB")
-
-        if stop_btn:
-            st.session_state.streaming = False
-            frame_placeholder = st.empty()
-            break
-
-        cap.release()
+    webrtc_streamer(
+        key="stream",
+        video_processor_factory=VideoProcessor,
+        rtc_configuration={"iceServers": [{"urls": "stun:stun.l.google.com:19302"}]},
+    )

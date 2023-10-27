@@ -40,7 +40,7 @@ The deployed web app can be accessed via this [link](https://ai-plant-disease-de
 Other relevant materials for this project can be found in the links below
 - Colab Notebook used for training can be found [here](https://colab.research.google.com/drive/1To3SMB80ZBSPaWIFWwfH3eBNnmYZ2ccB#scrollTo=QUeXDm037mW2)
 - Technical report can be found [here](https://docs.google.com/document/d/1ND9MEhL2OjsiLSpEMejNLfL_Hl4ZAs5mcIVmC5e0Aos/edit?usp=sharing)
-- The link to the presentation slides can be found [here](https://docs.google.com/presentation/d/1eLVHGNcV88BgkeyuBRCgqSfHWxRSrtPn/edit?usp=sharing&ouid=105531954412831785042&rtpof=true&sd=true)
+- The link to the presentation slides can be found [here](https://docs.google.com/presentation/d/1yzcbKSBHGQUpTjeuaBxYyEwTuRQfkru21kL1wEIGoi4/edit?usp=sharing)
 - The link to the recording can be found [here](#)
 
 

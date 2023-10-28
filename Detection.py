@@ -108,9 +108,9 @@ with tab1:
     if img_file_buffer is not None:
         # Process the captured image
         bytes_data = img_file_buffer.getvalue()
-        # img_tensor = tf.io.decode_image(bytes_data, channels=3)
-        # img_float = tf.image.convert_image_dtype(bytes_data, tf.float32)
-        resized_img = tf.image.resize(bytes_data, (224, 224))
+        img_tensor = tf.io.decode_image(bytes_data, channels=3)
+        img_float = tf.image.convert_image_dtype(bytes_data, tf.float32)
+        resized_img = tf.image.resize(img_float, (224, 224))
         batched_img = tf.expand_dims(resized_img, 0)
         predictions = keras_model.predict(batched_img)
         score = tf.nn.softmax(predictions[0])

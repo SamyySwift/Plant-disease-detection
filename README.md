@@ -41,7 +41,7 @@ Other relevant materials for this project can be found in the links below
 - Colab Notebook used for training can be found [here](https://colab.research.google.com/drive/1To3SMB80ZBSPaWIFWwfH3eBNnmYZ2ccB#scrollTo=QUeXDm037mW2)
 - Technical report can be found [here](https://docs.google.com/document/d/1ND9MEhL2OjsiLSpEMejNLfL_Hl4ZAs5mcIVmC5e0Aos/edit?usp=sharing)
 - The link to the presentation slides can be found [here](https://docs.google.com/presentation/d/1yzcbKSBHGQUpTjeuaBxYyEwTuRQfkru21kL1wEIGoi4/edit?usp=sharing)
-- The link to the recording can be found [here](#)
+- The link to the recording can be found [here](https://drive.google.com/file/d/1VJ-Oc-EpxHb5Bqav6NWSH1-Hk6PY1JQs/view?usp=drive_link)
 
 
 

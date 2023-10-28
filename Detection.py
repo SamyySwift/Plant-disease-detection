@@ -24,54 +24,56 @@ with st.sidebar:
         "Adjust classification model confidence threshold", 0.3, 1.0, 0.5
     )
 
-    object_detection_thresh = st.number_input("Adjust segmentation model confidence threshold", 0.2, 1.0, 0.5)
+    object_detection_thresh = st.number_input(
+        "Adjust segmentation model confidence threshold", 0.2, 1.0, 0.5
+    )
 
 
 # Define class names for plant diseases
 class_names = [
-    'Apple scab',
-    'Apple Black rot',
-    'Apple Cedar apple rust',
-    'Apple healthy',
-    'Blueberry healthy',
-    'Cassava Bacterial Blight',
-    'Cassava Brown Streak Disease',
-    'Cassava Green Mottle',
-    'Cassava Healthy',
-    'Cassava Mosaic Disease',
-    'Cherry Powdery mildew',
-    'Cherry healthy',
-    'Corn Cercospora leaf spot Gray leaf spot',
-    'Corn Common rust',
-    'Corn Northern Leaf Blight',
-    'Corn healthy',
-    'Grape Black rot',
-    'Grape Esca (Black Measles)',
-    'Grape Leaf blight (Isariopsis Leaf Spot)',
-    'Grape healthy',
-    'Orange Haunglongbing (Citrus greening)',
-    'Peach Bacterial spot',
-    'Peach healthy',
-    'Pepper bell Bacterial spot',
-    'Pepper bell healthy',
-    'Potato Early blight',
-    'Potato Late blight',
-    'Potato healthy',
-    'Raspberry healthy',
-    'Soybean healthy',
-    'Squash Powdery mildew',
-    'Strawberry Leaf scorch',
-    'Strawberry healthy',
-    'Tomato Bacterial spot',
-    'Tomato Early blight',
-    'Tomato Late blight',
-    'Tomato Leaf Mold',
-    'Tomato Septoria leaf spot',
-    'Tomato Spider mites Two-spotted spider mite',
-    'Tomato Target Spot',
-    'Tomato Yellow Leaf Curl Virus',
-    'Tomato mosaic virus',
-    'Tomato healthy'
+    "Apple scab",
+    "Apple Black rot",
+    "Apple Cedar apple rust",
+    "Apple healthy",
+    "Blueberry healthy",
+    "Cassava Bacterial Blight",
+    "Cassava Brown Streak Disease",
+    "Cassava Green Mottle",
+    "Cassava Healthy",
+    "Cassava Mosaic Disease",
+    "Cherry Powdery mildew",
+    "Cherry healthy",
+    "Corn Cercospora leaf spot Gray leaf spot",
+    "Corn Common rust",
+    "Corn Northern Leaf Blight",
+    "Corn healthy",
+    "Grape Black rot",
+    "Grape Esca (Black Measles)",
+    "Grape Leaf blight (Isariopsis Leaf Spot)",
+    "Grape healthy",
+    "Orange Haunglongbing (Citrus greening)",
+    "Peach Bacterial spot",
+    "Peach healthy",
+    "Pepper bell Bacterial spot",
+    "Pepper bell healthy",
+    "Potato Early blight",
+    "Potato Late blight",
+    "Potato healthy",
+    "Raspberry healthy",
+    "Soybean healthy",
+    "Squash Powdery mildew",
+    "Strawberry Leaf scorch",
+    "Strawberry healthy",
+    "Tomato Bacterial spot",
+    "Tomato Early blight",
+    "Tomato Late blight",
+    "Tomato Leaf Mold",
+    "Tomato Septoria leaf spot",
+    "Tomato Spider mites Two-spotted spider mite",
+    "Tomato Target Spot",
+    "Tomato Yellow Leaf Curl Virus",
+    "Tomato mosaic virus",
+    "Tomato healthy",
 ]
 
 add_vertical_space(3)
@@ -106,8 +108,8 @@ with tab1:
     if img_file_buffer is not None:
         # Process the captured image
         bytes_data = img_file_buffer.getvalue()
-        img_tensor = tf.io.decode_image(bytes_data, channels=3)
-        img_float = tf.image.convert_image_dtype(img_tensor, tf.float32)
+        # img_tensor = tf.io.decode_image(bytes_data, channels=3)
+        img_float = tf.image.convert_image_dtype(bytes_data, tf.float32)
         resized_img = tf.image.resize(img_float, (224, 224))
         batched_img = tf.expand_dims(resized_img, 0)
         predictions = keras_model.predict(batched_img)
